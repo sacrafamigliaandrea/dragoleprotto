@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Il drago e il leprotto — Dettato della fiaba</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f3ead8;
+  --paper-dark:#e8dcc1;
+  --ink:#2b1f12;
+  --ink-soft:#5a4a36;
+  --forest:#2f5d3a;
+  --forest-dark:#1d3e25;
+  --moss:#7a8b3f;
+  --bordeaux:#7a2024;
+  --gold:#a07a1f;
+  --shadow:rgba(60,40,15,.18);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--paper);color:var(--ink);font-family:'Lora',serif;line-height:1.6}
+
+body{
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(122,139,63,.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(122,32,36,.05) 0%, transparent 50%),
+    var(--paper);
+  min-height:100vh;
+  background-attachment:fixed;
+}
+
+/* texture pergamena leggera */
+body::before{
+  content:"";
+  position:fixed;inset:0;
+  pointer-events:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 0.2  0 0 0 0 0.15  0 0 0 0 0.05  0 0 0 0.04 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  opacity:.6;
+  z-index:0;
+}
+
+/* ============= PHASE 1 ============= */
+.phase{display:none;position:relative;z-index:1}
+.phase.active{display:block}
+
+#phase-1{
+  min-height:100vh;
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:40px 20px;
+}
+#phase-1.active{display:flex}
+
+.intro-card{
+  max-width:900px;
+  width:100%;
+  text-align:center;
+}
+
+.eyebrow{
+  font-family:'Cinzel',serif;
+  font-size:.78rem;
+  letter-spacing:.4em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:14px;
+}
+
+h1{
+  font-family:'Cinzel',serif;
+  font-weight:700;
+  font-size:clamp(2rem, 4.5vw, 3.4rem);
+  line-height:1.1;
+  color:var(--ink);
+  margin-bottom:10px;
+  letter-spacing:.02em;
+}
+
+.subtitle{
+  font-style:italic;
+  color:var(--ink-soft);
+  font-size:1.05rem;
+  margin-bottom:36px;
+}
+
+.video-wrap{
+  width:100%;
+  max-width:880px;
+  aspect-ratio:16/9;
+  background:#000;
+  border-radius:6px;
+  overflow:hidden;
+  box-shadow:0 20px 50px var(--shadow), 0 0 0 1px rgba(43,31,18,.1);
+  position:relative;
+  margin-bottom:28px;
+}
+.video-wrap iframe{width:100%;height:100%;border:0;display:block}
+
+.instructions{
+  display:flex;
+  gap:24px;
+  justify-content:center;
+  margin-bottom:28px;
+  flex-wrap:wrap;
+}
+.instr-step{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  text-align:left;
+  color:var(--ink-soft);
+  font-size:.95rem;
+  max-width:260px;
+}
+.instr-step .num{
+  width:34px;height:34px;
+  border:1.5px solid var(--forest);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cinzel',serif;
+  font-weight:700;
+  color:var(--forest);
+  flex-shrink:0;
+  background:var(--paper);
+}
+
+.btn{
+  font-family:'Cinzel',serif;
+  font-size:.95rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  font-weight:500;
+  padding:16px 40px;
+  border:1.5px solid var(--forest-dark);
+  background:var(--forest);
+  color:var(--paper);
+  border-radius:2px;
+  cursor:pointer;
+  transition:all .25s ease;
+  box-shadow:0 4px 14px rgba(29,62,37,.25);
+}
+.btn:hover:not(:disabled){
+  background:var(--forest-dark);
+  transform:translateY(-1px);
+  box-shadow:0 8px 22px rgba(29,62,37,.35);
+}
+.btn:disabled{
+  background:var(--paper-dark);
+  color:var(--ink-soft);
+  border-color:var(--paper-dark);
+  cursor:not-allowed;
+  box-shadow:none;
+  opacity:.7;
+}
+.btn.secondary{
+  background:transparent;
+  color:var(--forest-dark);
+  border-color:var(--forest-dark);
+  box-shadow:none;
+}
+.btn.secondary:hover:not(:disabled){
+  background:var(--forest-dark);
+  color:var(--paper);
+}
+.btn.bordeaux{
+  background:var(--bordeaux);
+  border-color:var(--bordeaux);
+  box-shadow:0 4px 14px rgba(122,32,36,.25);
+}
+.btn.bordeaux:hover:not(:disabled){
+  background:#5d181b;
+  border-color:#5d181b;
+}
+
+.hint-bar{
+  font-size:.85rem;
+  color:var(--ink-soft);
+  font-style:italic;
+  margin-top:16px;
+}
+
+/* ============= PHASE 2 ============= */
+#phase-2{padding-top:84px}
+
+.topbar{
+  position:fixed;
+  top:0;left:0;right:0;
+  height:72px;
+  background:var(--ink);
+  color:var(--paper);
+  display:flex;
+  align-items:center;
+  padding:0 24px;
+  gap:20px;
+  z-index:100;
+  box-shadow:0 4px 16px rgba(0,0,0,.25);
+}
+
+.topbar-title{
+  font-family:'Cinzel',serif;
+  font-size:.85rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--paper-dark);
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.topbar-title svg{flex-shrink:0}
+
+.audio-controls{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  flex:1;
+  max-width:600px;
+}
+
+.play-btn{
+  width:42px;height:42px;
+  border-radius:50%;
+  background:var(--paper);
+  color:var(--ink);
+  border:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  flex-shrink:0;
+  transition:transform .15s;
+}
+.play-btn:hover{transform:scale(1.06)}
+.play-btn:active{transform:scale(.96)}
+.play-btn svg{width:18px;height:18px}
+
+.seek-wrap{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
+.seek-bar{
+  width:100%;
+  height:5px;
+  background:rgba(243,234,216,.2);
+  border-radius:3px;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+}
+.seek-fill{
+  height:100%;
+  background:var(--moss);
+  width:0%;
+  transition:width .1s linear;
+  pointer-events:none;
+}
+.time-row{
+  display:flex;
+  justify-content:space-between;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;
+  color:var(--paper-dark);
+  letter-spacing:.05em;
+}
+
+.speed-toggle{
+  background:transparent;
+  border:1px solid rgba(243,234,216,.3);
+  color:var(--paper-dark);
+  font-family:'JetBrains Mono',monospace;
+  font-size:.78rem;
+  padding:6px 10px;
+  border-radius:3px;
+  cursor:pointer;
+  transition:all .2s;
+  flex-shrink:0;
+}
+.speed-toggle:hover{
+  border-color:var(--moss);
+  color:var(--paper);
+}
+.speed-toggle.active{
+  background:var(--moss);
+  color:var(--ink);
+  border-color:var(--moss);
+}
+
+.progress-counter{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.78rem;
+  color:var(--paper-dark);
+  letter-spacing:.08em;
+  flex-shrink:0;
+  border-left:1px solid rgba(243,234,216,.2);
+  padding-left:20px;
+}
+.progress-counter strong{color:var(--paper);font-weight:500}
+
+/* hidden YouTube player in phase 2 */
+.hidden-player{
+  position:fixed;
+  top:-9999px;
+  left:-9999px;
+  width:1px;height:1px;
+  opacity:0;
+  pointer-events:none;
+}
+
+.text-page{
+  max-width:720px;
+  margin:0 auto;
+  padding:48px 32px 200px;
+}
+
+.text-page h2{
+  font-family:'Cinzel',serif;
+  font-size:1.6rem;
+  text-align:center;
+  margin-bottom:8px;
+  color:var(--ink);
+}
+.text-page .lead{
+  text-align:center;
+  font-style:italic;
+  color:var(--ink-soft);
+  margin-bottom:48px;
+  font-size:.95rem;
+}
+
+.fiaba-text{
+  font-size:1.2rem;
+  line-height:2.1;
+  color:var(--ink);
+  font-family:'Lora',serif;
+  text-align:left;
+}
+.fiaba-text p{margin-bottom:1.4em}
+
+.blank-input{
+  font-family:'Lora',serif;
+  font-size:1.05rem;
+  font-weight:500;
+  color:var(--bordeaux);
+  background:transparent;
+  border:0;
+  border-bottom:2px dotted var(--ink-soft);
+  text-align:center;
+  padding:2px 6px 2px;
+  margin:0 2px;
+  outline:none;
+  transition:border-color .2s, background .2s;
+  font-style:italic;
+}
+.blank-input:focus{
+  border-bottom-color:var(--forest);
+  background:rgba(122,139,63,.08);
+}
+.blank-input:not(:placeholder-shown){
+  font-style:normal;
+}
+
+.action-bar{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  background:var(--paper);
+  border-top:1px solid var(--paper-dark);
+  padding:18px 24px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:20px;
+  z-index:50;
+  box-shadow:0 -4px 16px var(--shadow);
+}
+
+/* ============= PHASE 3 (results) ============= */
+#phase-3{
+  min-height:100vh;
+  padding:60px 20px;
+}
+
+.results-card{
+  max-width:780px;
+  margin:0 auto;
+  text-align:center;
+}
+
+.score-ring{
+  width:200px;height:200px;
+  margin:24px auto 28px;
+  position:relative;
+}
+.score-ring svg{transform:rotate(-90deg)}
+.score-ring .ring-bg{fill:none;stroke:var(--paper-dark);stroke-width:10}
+.score-ring .ring-fg{fill:none;stroke-width:10;stroke-linecap:round;transition:stroke-dasharray 1s ease-out}
+.score-text{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+.score-num{
+  font-family:'Cinzel',serif;
+  font-size:3.4rem;
+  font-weight:700;
+  line-height:1;
+  color:var(--ink);
+}
+.score-of{
+  font-family:'Lora',serif;
+  font-size:.85rem;
+  color:var(--ink-soft);
+  font-style:italic;
+  margin-top:6px;
+}
+
+.score-label{
+  font-family:'Cinzel',serif;
+  font-size:1.1rem;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  margin-bottom:36px;
+}
+
+.stats-row{
+  display:flex;
+  justify-content:center;
+  gap:40px;
+  margin-bottom:48px;
+  flex-wrap:wrap;
+}
+.stat{text-align:center}
+.stat .stat-num{
+  font-family:'Cinzel',serif;
+  font-size:2rem;
+  font-weight:700;
+  line-height:1;
+  display:block;
+}
+.stat .stat-label{
+  font-size:.78rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+  margin-top:6px;
+}
+.stat.correct .stat-num{color:var(--forest)}
+.stat.wrong .stat-num{color:var(--bordeaux)}
+
+.recap{
+  text-align:left;
+  background:rgba(255,255,255,.4);
+  border:1px solid var(--paper-dark);
+  border-radius:4px;
+  padding:24px 28px;
+  margin-bottom:32px;
+}
+.recap h3{
+  font-family:'Cinzel',serif;
+  font-size:1rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  margin-bottom:18px;
+  color:var(--ink);
+  text-align:center;
+}
+.recap-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:10px 24px;
+  font-size:.95rem;
+}
+.recap-item{
+  display:flex;
+  align-items:baseline;
+  gap:8px;
+  padding:6px 0;
+  border-bottom:1px dotted var(--paper-dark);
+}
+.recap-item .icon{
+  width:14px;height:14px;
+  flex-shrink:0;
+  margin-top:3px;
+}
+.recap-item.ok .icon{color:var(--forest)}
+.recap-item.ko .icon{color:var(--bordeaux)}
+.recap-item .answers{flex:1;line-height:1.4}
+.recap-item .yours{
+  text-decoration:line-through;
+  color:var(--bordeaux);
+  font-style:italic;
+  margin-right:6px;
+}
+.recap-item .truth{
+  color:var(--forest-dark);
+  font-weight:500;
+}
+
+.results-actions{
+  display:flex;
+  gap:16px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+@media (max-width:640px){
+  .topbar{padding:0 12px;gap:10px}
+  .topbar-title{display:none}
+  .progress-counter{display:none}
+  .text-page{padding:32px 18px 180px}
+  .fiaba-text{font-size:1.05rem;line-height:2}
+  .stats-row{gap:20px}
+  .recap-list{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ============= PHASE 1: VIDEO ============= -->
+<section id="phase-1" class="phase active">
+  <div class="intro-card">
+    <div class="eyebrow">Fiaba classica con animali</div>
+    <h1>Il drago e il leprotto</h1>
+    <p class="subtitle">Guarda la fiaba per intero. Poi metterai alla prova il tuo ascolto.</p>
+
+    <div class="video-wrap">
+      <div id="yt-player-phase1"></div>
+    </div>
+
+    <div class="instructions">
+      <div class="instr-step">
+        <div class="num">I</div>
+        <div>Guarda <strong>tutto il video</strong> con attenzione.</div>
+      </div>
+      <div class="instr-step">
+        <div class="num">II</div>
+        <div>Inizia il dettato: scrivi le parole mancanti ascoltando l'audio.</div>
+      </div>
+      <div class="instr-step">
+        <div class="num">III</div>
+        <div>Riceverai punteggio e correzione <strong>solo alla fine</strong>.</div>
+      </div>
+    </div>
+
+    <button id="start-dictation" class="btn" disabled>Inizia il dettato</button>
+    <p class="hint-bar" id="phase1-hint">Il bottone si attiverà al termine del video.</p>
+  </div>
+</section>
+
+<!-- ============= PHASE 2: DICTATION ============= -->
+<section id="phase-2" class="phase">
+  <div class="topbar">
+    <div class="topbar-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
+        <path d="M21 19a2 2 0 0 1-2 2h-1v-6h3v4zM3 19a2 2 0 0 0 2 2h1v-6H3v4z" fill="currentColor"/>
+      </svg>
+      <span>Dettato della fiaba</span>
+    </div>
+
+    <div class="audio-controls">
+      <button id="play-btn" class="play-btn" aria-label="Play">
+        <svg id="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+
+      <div class="seek-wrap">
+        <div class="seek-bar" id="seek-bar">
+          <div class="seek-fill" id="seek-fill"></div>
+        </div>
+        <div class="time-row">
+          <span id="time-current">0:00</span>
+          <span id="time-total">0:00</span>
+        </div>
+      </div>
+
+      <button class="speed-toggle" id="speed-toggle" data-speed="1">1×</button>
+    </div>
+
+    <div class="progress-counter">
+      <strong id="filled-count">0</strong>/<span id="total-count">0</span> parole
+    </div>
+  </div>
+
+  <div class="hidden-player">
+    <div id="yt-player-phase2"></div>
+  </div>
+
+  <div class="text-page">
+    <h2>Scrivi le parole mancanti</h2>
+    <p class="lead">Ascolta quante volte vuoi. Nessun aiuto, nessun feedback fino alla fine.</p>
+    <div class="fiaba-text" id="fiaba-text"></div>
+  </div>
+
+  <div class="action-bar">
+    <button id="verify-btn" class="btn bordeaux" disabled>Verifica le risposte</button>
+  </div>
+</section>
+
+<!-- ============= PHASE 3: RESULTS ============= -->
+<section id="phase-3" class="phase">
+  <div class="results-card">
+    <div class="eyebrow">Esito del dettato</div>
+    <h1 style="font-size:clamp(1.8rem,3.5vw,2.6rem);margin-bottom:8px">Hai completato la fiaba</h1>
+    <p class="subtitle" style="margin-bottom:0">Ecco il tuo punteggio.</p>
+
+    <div class="score-ring">
+      <svg width="200" height="200" viewBox="0 0 200 200">
+        <circle class="ring-bg" cx="100" cy="100" r="90"/>
+        <circle class="ring-fg" id="ring-fg" cx="100" cy="100" r="90"
+                stroke="var(--forest)" stroke-dasharray="0 565"/>
+      </svg>
+      <div class="score-text">
+        <div class="score-num" id="score-percent">0</div>
+        <div class="score-of"><span id="score-correct">0</span> su <span id="score-total">0</span></div>
+      </div>
+    </div>
+
+    <div class="score-label" id="score-label">—</div>
+
+    <div class="stats-row">
+      <div class="stat correct">
+        <span class="stat-num" id="stat-correct">0</span>
+        <div class="stat-label">corrette</div>
+      </div>
+      <div class="stat wrong">
+        <span class="stat-num" id="stat-wrong">0</span>
+        <div class="stat-label">errate</div>
+      </div>
+      <div class="stat">
+        <span class="stat-num" id="stat-total">0</span>
+        <div class="stat-label">totali</div>
+      </div>
+    </div>
+
+    <div class="recap">
+      <h3>Riepilogo parole</h3>
+      <div class="recap-list" id="recap-list"></div>
+    </div>
+
+    <div class="results-actions">
+      <button class="btn secondary" id="retry-btn">Riprova il dettato</button>
+      <button class="btn" id="rewatch-btn">Rivedi il video</button>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ===========================================================================
+   TESTO DELLA FIABA — VERSIONE PLACEHOLDER
+   ===========================================================================
+   Quando arriva il file SRT, sostituire l'array `fiaba` con il testo definitivo.
+   Struttura: ogni elemento è una RIGA della fiaba (stringa).
+   - Testo normale: "C'era una volta un grande drago."
+   - Parole da oscurare: racchiuse tra DOPPIE PARENTESI QUADRE: [[drago]]
+   - Per andare a capo (paragrafo nuovo): elemento "" (stringa vuota)
+   =========================================================================== */
+const RAW_FIABA = [
+  "In una grande [[foresta]] vivevano molti animali in pace e armonia.",
+  "Un giorno, un grande [[drago]] arrivò dalle [[montagne]] del nord.",
+  "",
+  "Il drago era enorme, [[prepotente]] e sputava fiamme dal naso.",
+  "Voleva diventare il padrone di tutto il [[bosco]].",
+  "",
+  "Tutti gli animali avevano [[paura]]: la [[volpe]], l'[[orso]], il lupo e perfino il [[cervo]] più [[coraggioso]].",
+  "Si nascondevano tra i [[cespugli]] e non uscivano più nemmeno per cercare cibo.",
+  "",
+  "Ma un piccolo [[leprotto]] non si arrese.",
+  "«Non possiamo restare nascosti per sempre», disse con voce [[ferma]].",
+  "«Se ci uniamo, riusciremo a [[scacciarlo]] insieme.»",
+  "",
+  "Gli animali, ascoltando le sue [[parole]], ritrovarono il [[coraggio]] perduto."
+];
+
+/* Configurazione */
+const VIDEO_ID = "uXfoN5wKt-U";
+const STORAGE_KEY = "dettato_fiaba_drago_leprotto_v1";
+
+/* ============ Parsing del testo ============ */
+const fiabaParsed = []; // array di paragrafi, ognuno è array di parti {type, value}
+let blanksList = [];    // array piatto delle parole-buco con id, value, paragrafo
+
+(function parseFiaba(){
+  let blankIdx = 0;
+  let currentPara = [];
+  RAW_FIABA.forEach(line => {
+    if(line === ""){
+      if(currentPara.length){ fiabaParsed.push(currentPara); currentPara = []; }
+      return;
+    }
+    const re = /\[\[([^\]]+)\]\]/g;
+    let last = 0, m;
+    while((m = re.exec(line)) !== null){
+      if(m.index > last){
+        currentPara.push({type:'text', value: line.slice(last, m.index)});
+      }
+      currentPara.push({type:'blank', value: m[1], id: blankIdx});
+      blanksList.push({id: blankIdx, correct: m[1]});
+      blankIdx++;
+      last = m.index + m[0].length;
+    }
+    if(last < line.length){
+      currentPara.push({type:'text', value: line.slice(last)});
+    }
+  });
+  if(currentPara.length) fiabaParsed.push(currentPara);
+})();
+
+/* ============ DOM render fiaba ============ */
+function renderFiaba(){
+  const root = document.getElementById('fiaba-text');
+  root.innerHTML = '';
+  fiabaParsed.forEach(para => {
+    const p = document.createElement('p');
+    para.forEach(part => {
+      if(part.type === 'text'){
+        p.appendChild(document.createTextNode(part.value));
+      } else {
+        const inp = document.createElement('input');
+        inp.type = 'text';
+        inp.className = 'blank-input';
+        inp.dataset.id = part.id;
+        inp.dataset.correct = part.value;
+        inp.placeholder = '_'.repeat(Math.max(3, part.value.length));
+        // larghezza approssimativa basata sulla lunghezza
+        inp.style.width = `${Math.max(5, part.value.length * 0.95)}ch`;
+        inp.autocomplete = 'off';
+        inp.spellcheck = false;
+        inp.addEventListener('input', onInputChange);
+        p.appendChild(inp);
+      }
+    });
+    root.appendChild(p);
+  });
+  document.getElementById('total-count').textContent = blanksList.length;
+}
+
+function getInputs(){ return Array.from(document.querySelectorAll('.blank-input')); }
+
+function onInputChange(){
+  const inputs = getInputs();
+  const filled = inputs.filter(i => i.value.trim().length > 0).length;
+  document.getElementById('filled-count').textContent = filled;
+  document.getElementById('verify-btn').disabled = filled !== inputs.length;
+  // autosave
+  saveProgress();
+}
+
+function saveProgress(){
+  const data = {};
+  getInputs().forEach(i => { data[i.dataset.id] = i.value; });
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e){}
+}
+
+function loadProgress(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return;
+    const data = JSON.parse(raw);
+    getInputs().forEach(i => {
+      if(data[i.dataset.id]) i.value = data[i.dataset.id];
+    });
+    onInputChange();
+  } catch(e){}
+}
+
+function clearProgress(){
+  try { localStorage.removeItem(STORAGE_KEY); } catch(e){}
+}
+
+/* ============ YouTube IFrame API ============ */
+let player1 = null; // phase 1 — visible
+let player2 = null; // phase 2 — hidden audio
+let phase1Complete = false;
+
+// Inject API script
+const tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+document.head.appendChild(tag);
+
+function onYouTubeIframeAPIReady(){
+  player1 = new YT.Player('yt-player-phase1', {
+    videoId: VIDEO_ID,
+    playerVars: {rel:0, playsinline:1, controls:1, modestbranding:1},
+    events: {
+      onReady: () => {},
+      onStateChange: ev => {
+        if(ev.data === YT.PlayerState.ENDED){
+          markPhase1Complete();
+        }
+      }
+    }
+  });
+
+  // Player 2 lo creiamo lazy quando entriamo in fase 2
+}
+
+function createPlayer2(){
+  if(player2) return;
+  player2 = new YT.Player('yt-player-phase2', {
+    videoId: VIDEO_ID,
+    playerVars: {rel:0, playsinline:1, controls:0},
+    events: {
+      onReady: () => {
+        const dur = player2.getDuration();
+        document.getElementById('time-total').textContent = formatTime(dur);
+        startSeekUpdater();
+      },
+      onStateChange: ev => {
+        const playIcon = document.getElementById('icon-play');
+        if(ev.data === YT.PlayerState.PLAYING){
+          playIcon.innerHTML = '<rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/>';
+        } else {
+          playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+        }
+      }
+    }
+  });
+}
+
+function markPhase1Complete(){
+  phase1Complete = true;
+  document.getElementById('start-dictation').disabled = false;
+  document.getElementById('phase1-hint').textContent = 'Bravo, hai finito il video. Ora puoi iniziare il dettato.';
+}
+
+/* dev shortcut: doppio click sul subtitle attiva il bottone (per test) */
+document.querySelector('#phase-1 .subtitle')?.addEventListener('dblclick', () => {
+  markPhase1Complete();
+});
+
+/* ============ Audio controls (phase 2) ============ */
+let seekTimer = null;
+
+function formatTime(s){
+  if(!s || isNaN(s)) return '0:00';
+  s = Math.floor(s);
+  const m = Math.floor(s/60), sec = s%60;
+  return `${m}:${sec.toString().padStart(2,'0')}`;
+}
+
+function startSeekUpdater(){
+  if(seekTimer) clearInterval(seekTimer);
+  seekTimer = setInterval(() => {
+    if(!player2 || !player2.getCurrentTime) return;
+    const cur = player2.getCurrentTime();
+    const dur = player2.getDuration() || 1;
+    const pct = (cur/dur)*100;
+    document.getElementById('seek-fill').style.width = pct + '%';
+    document.getElementById('time-current').textContent = formatTime(cur);
+  }, 250);
+}
+
+document.getElementById('play-btn').addEventListener('click', () => {
+  if(!player2 || !player2.getPlayerState) return;
+  const state = player2.getPlayerState();
+  if(state === YT.PlayerState.PLAYING){ player2.pauseVideo(); }
+  else { player2.playVideo(); }
+});
+
+document.getElementById('seek-bar').addEventListener('click', e => {
+  if(!player2) return;
+  const rect = e.currentTarget.getBoundingClientRect();
+  const pct = (e.clientX - rect.left) / rect.width;
+  const dur = player2.getDuration();
+  player2.seekTo(dur * pct, true);
+});
+
+document.getElementById('speed-toggle').addEventListener('click', e => {
+  const btn = e.currentTarget;
+  const speeds = [1, 0.75, 0.5];
+  let cur = parseFloat(btn.dataset.speed);
+  let idx = speeds.indexOf(cur);
+  idx = (idx + 1) % speeds.length;
+  const next = speeds[idx];
+  btn.dataset.speed = next;
+  btn.textContent = next + '×';
+  btn.classList.toggle('active', next !== 1);
+  if(player2 && player2.setPlaybackRate) player2.setPlaybackRate(next);
+});
+
+/* ============ Phase navigation ============ */
+function goToPhase(n){
+  document.querySelectorAll('.phase').forEach(s => s.classList.remove('active'));
+  document.getElementById('phase-'+n).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+document.getElementById('start-dictation').addEventListener('click', () => {
+  if(player1 && player1.pauseVideo) player1.pauseVideo();
+  goToPhase(2);
+  createPlayer2();
+  // focus primo input
+  setTimeout(() => {
+    const first = document.querySelector('.blank-input');
+    if(first) first.focus();
+  }, 200);
+});
+
+/* ============ Verifica e risultati ============ */
+function normalize(s){
+  return s.trim()
+    .toLowerCase()
+    .replace(/[\u2018\u2019\u02BC]/g, "'")  // apostrofi tipografici → ASCII
+    .replace(/\s+/g, ' ');
+}
+
+document.getElementById('verify-btn').addEventListener('click', () => {
+  // ferma audio
+  if(player2 && player2.pauseVideo) player2.pauseVideo();
+
+  const inputs = getInputs();
+  const results = inputs.map(inp => {
+    const correct = inp.dataset.correct;
+    const userVal = inp.value;
+    const ok = normalize(userVal) === normalize(correct);
+    return {correct, userVal, ok};
+  });
+
+  const correct = results.filter(r => r.ok).length;
+  const total = results.length;
+  const pct = Math.round((correct/total) * 100);
+
+  // popolo UI risultati
+  document.getElementById('score-percent').textContent = pct;
+  document.getElementById('score-correct').textContent = correct;
+  document.getElementById('score-total').textContent = total;
+  document.getElementById('stat-correct').textContent = correct;
+  document.getElementById('stat-wrong').textContent = total - correct;
+  document.getElementById('stat-total').textContent = total;
+
+  // ring animation
+  const ring = document.getElementById('ring-fg');
+  const circ = 2 * Math.PI * 90;
+  setTimeout(() => {
+    ring.style.strokeDasharray = `${(pct/100)*circ} ${circ}`;
+  }, 100);
+
+  // colore ring + label
+  let label = '', ringColor = '';
+  if(pct >= 90){ label = 'Eccellente'; ringColor = 'var(--forest)'; }
+  else if(pct >= 75){ label = 'Buono'; ringColor = 'var(--moss)'; }
+  else if(pct >= 60){ label = 'Discreto'; ringColor = 'var(--gold)'; }
+  else if(pct >= 40){ label = 'Da migliorare'; ringColor = 'var(--bordeaux)'; }
+  else { label = 'Riascolta con calma'; ringColor = 'var(--bordeaux)'; }
+  document.getElementById('score-label').textContent = label;
+  ring.setAttribute('stroke', ringColor);
+
+  // recap list
+  const recap = document.getElementById('recap-list');
+  recap.innerHTML = '';
+  results.forEach((r, i) => {
+    const item = document.createElement('div');
+    item.className = 'recap-item ' + (r.ok ? 'ok' : 'ko');
+    const icon = r.ok
+      ? '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="5 12 10 17 19 7"/></svg>'
+      : '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>';
+    let answers = '';
+    if(r.ok){
+      answers = `<span class="truth">${escapeHtml(r.correct)}</span>`;
+    } else {
+      const yours = r.userVal.trim() ? `<span class="yours">${escapeHtml(r.userVal)}</span>` : '<span class="yours">—</span>';
+      answers = `${yours}<span class="truth">${escapeHtml(r.correct)}</span>`;
+    }
+    item.innerHTML = `<span style="font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--ink-soft);min-width:24px">${(i+1).toString().padStart(2,'0')}</span>${icon}<div class="answers">${answers}</div>`;
+    recap.appendChild(item);
+  });
+
+  clearProgress();
+  goToPhase(3);
+});
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* ============ Buttons phase 3 ============ */
+document.getElementById('retry-btn').addEventListener('click', () => {
+  // azzera input ma resta in fase 2
+  getInputs().forEach(i => { i.value = ''; });
+  clearProgress();
+  onInputChange();
+  goToPhase(2);
+});
+
+document.getElementById('rewatch-btn').addEventListener('click', () => {
+  // azzera input e torna a fase 1
+  getInputs().forEach(i => { i.value = ''; });
+  clearProgress();
+  onInputChange();
+  phase1Complete = false;
+  document.getElementById('start-dictation').disabled = true;
+  document.getElementById('phase1-hint').textContent = 'Il bottone si attiverà al termine del video.';
+  goToPhase(1);
+  if(player1 && player1.seekTo){
+    player1.seekTo(0, true);
+    player1.pauseVideo();
+  }
+});
+
+/* ============ Init ============ */
+renderFiaba();
+loadProgress();
+</script>
+</body>
+</html>
